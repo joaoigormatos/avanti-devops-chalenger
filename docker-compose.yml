@@ -1,0 +1,49 @@
+version: "3"
+
+services:
+  ms-read-avanti:
+    build:
+      context: ./ms-read/.
+      args:
+        RABBITMQ_URL: "rabbitmq"
+        RABBITMQ_USERNAME: "user"
+        RABBITMQ_PASSWORD: "password"
+        RABBITMQ_QUEUE: "messages"
+        RABBITMQ_PREFETCH: "5"
+    ports:
+      - "8000:8000" # Replace with your app's port
+    depends_on:
+      - rabbitmq
+    networks:
+      - avantinetwork
+  ms-write-avanti:
+    build:
+      context: ./ms-write/.
+      args:
+        RABBITMQ_URL: "rabbitmq"
+        RABBITMQ_USERNAME: "user"
+        RABBITMQ_PASSWORD: "password"
+        RABBITMQ_QUEUE: "messages"
+        RABBITMQ_PREFETCH: "5"
+        APP_NAME: "ms-escrita"
+        TIMER: 1
+    ports:
+      - "8001:8000" # Replace with your app's port
+    depends_on:
+      - rabbitmq
+    networks:
+      - avantinetwork
+
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=password
+    networks:
+      - avantinetwork
+networks:
+  avantinetwork:
+    driver: bridge

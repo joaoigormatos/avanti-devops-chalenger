@@ -1,0 +1,4 @@
+docker build --build-arg RABBITMQ_URL=host.docker.internal --build-arg RABBITMQ_USERNAME=user --build-arg RABBITMQ_PASSWORD=password --build-arg RABBITMQ_QUEUE=messages --build-arg RABBITMQ_PREFETCH=5 -t m-read-avanti . 
+
+
+docker build --build-arg RABBITMQ_URL=host.docker.internal --build-arg RABBITMQ_USERNAME=user --build-arg RABBITMQ_PASSWORD=password --build-arg RABBITMQ_QUEUE=messages --build-arg RABBITMQ_PREFETCH=5 --build-arg APP_NAME=ms-escrita --build-arg TIMER=1 -t ms-write-avanti . 
